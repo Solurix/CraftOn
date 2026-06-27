@@ -21,12 +21,13 @@ _Last updated: 2026-06-27_
 - (nothing actively coding yet)
 
 ## Next up (in order)
-1. **Owner:** provide / confirm GCP project + billing account + project ID, and the exact
-   "Greater Tokyo" prefecture set. (See open questions.)
-2. Create repos `crafton-api` and `crafton-web` (owner creates; AI scaffolds).
-3. `terraform apply` the `dev` environment.
-4. Scaffold FastAPI API (models + first migration + auth middleware + healthz).
-5. Build Phase 1 features in the order in `docs/04-phase-1-spec.md` §7.
+1. **Owner:** confirm the exact dev **Project ID** string (number is `714543585271`),
+   link **billing**, create the **GCS state bucket**.
+2. ✅ App repos `crafton-api` and `crafton-web` created by owner.
+3. **Start a new session** to build Phase 1 using `docs/phase-1-kickoff-prompt.md`.
+4. Scaffold FastAPI API (models + first migration + auth middleware + healthz), then build
+   Phase 1 features in the order in `docs/04-phase-1-spec.md` §7.
+5. `terraform apply` the `dev` environment (once #1 done) to deploy.
 
 ## Open questions / blockers
 - [~] GCP **dev project created** (`crafton-dev`). Remaining before `terraform apply`:
