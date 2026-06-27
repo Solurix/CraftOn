@@ -3,7 +3,7 @@
 #
 # terraform {
 #   backend "gcs" {
-#     bucket = "crafton-tfstate-dev"
+#     bucket = "crafton-dev-500709-tfstate" # create this versioned bucket first (globally unique)
 #     prefix = "env/dev"
 #   }
 # }

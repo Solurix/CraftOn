@@ -22,8 +22,8 @@ SOURCE OF TRUTH
 - App repos exist: `crafton-api` (backend) and `crafton-web` (frontend). Build Phase 1 in them.
 
 LOCKED DECISIONS (do not re-litigate)
-- Cloud: GCP, region asia-northeast1 (Tokyo). Dev project: crafton-dev (project number
-  714543585271). Infra is Terraform, already in the crafton repo — you don't recreate it.
+- Cloud: GCP, region asia-northeast1 (Tokyo). Dev project ID: crafton-dev-500709 (project
+  number 784671749504). Infra is Terraform, already in the crafton repo — you don't recreate it.
 - crafton-api: Python + FastAPI, SQLAlchemy + Alembic, Pydantic, PostgreSQL (Cloud SQL), pytest.
 - crafton-web: Next.js (App Router, TypeScript), mobile-first installable PWA, with a gated
   /admin area. Tests: Vitest + React Testing Library + Playwright.

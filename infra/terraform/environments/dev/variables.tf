@@ -1,6 +1,7 @@
 variable "project_id" {
   type        = string
   description = "GCP project ID for the dev environment."
+  default     = "crafton-dev-500709" # project number 784671749504
 }
 
 variable "region" {

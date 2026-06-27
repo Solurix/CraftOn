@@ -1,7 +1,8 @@
 # Copy to terraform.tfvars and fill in. Do NOT commit terraform.tfvars (gitignored).
 # db_password is best provided via TF_VAR_db_password env var or a gitignored *.auto.tfvars.
 
-project_id          = "your-gcp-project-id-dev"
+# project_id has a default (crafton-dev-500709) in variables.tf; override here only if needed.
+project_id          = "crafton-dev-500709"
 region              = "asia-northeast1"
-uploads_bucket_name = "crafton-uploads-dev-CHANGE_ME"
+uploads_bucket_name = "crafton-uploads-dev-500709"
 # db_password       = "set-via-TF_VAR_db_password-instead"

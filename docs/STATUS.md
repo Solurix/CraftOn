@@ -21,18 +21,20 @@ _Last updated: 2026-06-27_
 - (nothing actively coding yet)
 
 ## Next up (in order)
-1. **Owner:** confirm the exact dev **Project ID** string (number is `714543585271`),
-   link **billing**, create the **GCS state bucket**.
+1. **Owner:** link **billing** to `crafton-dev-500709` and create the versioned **GCS
+   state bucket** `crafton-dev-500709-tfstate` (then uncomment `dev/backend.tf`).
 2. ✅ App repos `crafton-api` and `crafton-web` created by owner.
+   ✅ Dev Project ID confirmed (`crafton-dev-500709`) and wired into Terraform.
 3. **Start a new session** to build Phase 1 using `docs/phase-1-kickoff-prompt.md`.
 4. Scaffold FastAPI API (models + first migration + auth middleware + healthz), then build
    Phase 1 features in the order in `docs/04-phase-1-spec.md` §7.
 5. `terraform apply` the `dev` environment (once #1 done) to deploy.
 
 ## Open questions / blockers
-- [~] GCP **dev project created** (`crafton-dev`). Remaining before `terraform apply`:
-  confirm the exact immutable **Project ID** (watch the `crafton` spelling), link a
-  **billing account**, and create a versioned **GCS state bucket** (e.g. `crafton-tfstate-dev`).
+- [~] GCP **dev project** confirmed: **Project ID `crafton-dev-500709`** (number
+  784671749504), wired into `infra/terraform/environments/dev/`. Remaining before
+  `terraform apply`: link a **billing account** and create a versioned **GCS state
+  bucket** (`crafton-dev-500709-tfstate`), then uncomment `backend.tf`.
   `crafton-prod` project is created later.
 - [ ] Exact "Greater Tokyo" prefecture list (default: Tokyo, Kanagawa, Saitama, Chiba).
 - [ ] Initial trade list (default: open free-text + suggestions).
