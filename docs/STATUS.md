@@ -6,8 +6,13 @@
 _Last updated: 2026-06-27_
 
 ## Current phase
-**Phase 1 — building.** `crafton-api` skeleton (build-order step 1) is in place and
-green. Next: auth/users/onboarding + document upload + admin vetting (step 2).
+**Phase 1 — feature-complete (dev).** The full cycle works end-to-end:
+post job → apply → confirm → check-in → check-out → approve completion → reviews,
+with admin vetting, the visa/insurance gates, server-side contact masking, and
+the ¥3,000 fee record. Backend (`crafton-api`, build-order steps 1–7) and the
+PWA (`crafton-web`, step 8) are built and green; happy-path E2E in place (step 9).
+**Pushed to `main`** in both app repos. Remaining: `terraform apply` to deploy
+(needs billing + state bucket), real Firebase wiring, and legal sign-off on terms.
 
 ## Done
 - ✅ Product overview, architecture, roadmap agreed (`docs/01`–`03`).
@@ -28,22 +33,43 @@ green. Next: auth/users/onboarding + document upload + admin vetting (step 2).
     needed), `POST /auth/session` + `GET /me`, role guards.
   - **i18n catalog** on the API (`ja`/`en`) + parity check wired into CI.
   - `/healthz` + `/readyz`; CI (ruff, mypy, i18n parity, migration round-trip, pytest).
-  - 20 tests passing (config precedence, i18n parity, health, auth/session); ruff + mypy clean.
+- ✅ **`crafton-api` Phase 1 backend (steps 2–7)** on `main`:
+  - **Onboarding + documents + admin vetting** (step 2): worker/contractor onboarding,
+    signed-URL document upload (storage abstraction: fake for dev/CI, GCS for prod),
+    vetting queue + approve/reject/suspend with the **visa gate** (non-JP needs card +
+    non-expired visa).
+  - **Jobs** (step 3): post/list/detail/search/cancel with config-driven service-area &
+    allowed-trades checks (permissive by default).
+  - **Matching** (step 4): apply/confirm, **state machine** (legal transitions only),
+    contract-type routing (employee→day-labor, freelance→subcontract), **freelance-insurance
+    gate**, wage snapshot, generated placeholder terms.
+  - **Chat + contact masking** (step 5): server-authoritative masking of phones/11-digit/
+    email/LINE incl. full-width & kana edge cases.
+  - **Check-in/out + completion + fee** (step 6): lifecycle endpoints; ¥3,000 fee recorded
+    unpaid; admin matchings list + mark-fee-paid + config read/update. New
+    `matchings.completion_requested_at` column (+ migration; docs/05 updated).
+  - **Reviews + trust** (step 7): two-way reviews after completion; derived trust_score/rating.
+  - **109 tests** (incl. all must-test rules + a full-cycle integration test); ruff + mypy clean.
+- ✅ **`crafton-web` PWA (step 8)** on `main`: Next.js App Router PWA, next-intl (ja+en,
+  parity in CI), Firebase-OTP auth abstraction (fake mode for dev/CI/E2E), typed client from
+  the API OpenAPI, full worker/contractor/admin screens for the cycle, installability,
+  empty/error states. Vitest + lint + typecheck + build green.
+- ✅ **Hardening + E2E (step 9)**: API-level full-cycle test + Playwright browser smoke
+  (signup→onboarding) verified against a running API.
 
 ## In progress
-- `crafton-api` build-order **step 2**: auth/users/onboarding, document upload (signed
-  URLs), and admin vetting.
+- (Phase 1 dev build complete — see "Next up" for deployment + go-live items.)
 
 ## Next up (in order)
 1. **Owner:** link **billing** to `crafton-dev-500709` and create the versioned **GCS
    state bucket** `crafton-dev-500709-tfstate` (then uncomment `dev/backend.tf`).
 2. ✅ App repos `crafton-api` and `crafton-web` created by owner.
    ✅ Dev Project ID confirmed (`crafton-dev-500709`) and wired into Terraform.
-3. ✅ Phase 1 session started; `crafton-api` scaffolded (step 1, above).
-4. Continue Phase 1 features in `docs/04-phase-1-spec.md` §7 order: onboarding + documents
-   + admin vetting → jobs → matching → chat/contact-masking → check-in/out + fee → reviews,
-   then `crafton-web` PWA.
-5. `terraform apply` the `dev` environment (once #1 done) to deploy.
+3. ✅ Phase 1 app built end-to-end in both repos (steps 1–9 above), pushed to `main`.
+4. **Deploy:** `terraform apply` the `dev` environment (once #1 done); build/push the API +
+   web containers to Cloud Run; wire Cloud SQL, Storage bucket, and the real Firebase project.
+5. **Go-live prep:** swap `CRAFTON_AUTH_MODE`/`NEXT_PUBLIC_AUTH_MODE` to `firebase` and wire
+   the Firebase web SDK; legal sign-off on the auto-generated terms wording; add app icons.
 
 ## Open questions / blockers
 - [~] GCP **dev project** confirmed: **Project ID `crafton-dev-500709`** (number
