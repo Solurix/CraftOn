@@ -54,6 +54,7 @@ Precedence: runtime `app_config` override → env var → built-in default.
 | `waitlist_out_of_area` | `true` | Show waitlist screen outside service area. |
 | `contact_mask_enabled` | `true` | Contact masking in chat (keep ON — core value). |
 | `visa_gate_enabled` | `true` | Non-JP visa gate (keep ON — legal). |
+| `auto_approve_users` | `false` | When ON, finishing onboarding approves the account automatically (no manual vetting); turning it on also clears the existing pending backlog. The non-JP visa gate still applies (a worker who fails it stays pending). Handy for dev/testing. |
 
 ## Rules for AI sessions
 - Never hardcode any value that appears in this file — read it from config.

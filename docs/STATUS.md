@@ -13,6 +13,11 @@ the ¥3,000 fee record. Backend (`crafton-api`, build-order steps 1–7) and the
 PWA (`crafton-web`, step 8) are built and green; happy-path E2E in place (step 9).
 **Pushed to `main`** in both app repos. Remaining: `terraform apply` to deploy
 (needs billing + state bucket), real Firebase wiring, and legal sign-off on terms.
+with admin vetting, the visa/insurance gates, server-side contact masking, and
+the ¥3,000 fee record. Backend (`crafton-api`, build-order steps 1–7) and the
+PWA (`crafton-web`, step 8) are built and green; happy-path E2E in place (step 9).
+**Pushed to `main`** in both app repos. Remaining: `terraform apply` to deploy
+(needs billing + state bucket), real Firebase wiring, and legal sign-off on terms.
 
 ## Done
 - ✅ Product overview, architecture, roadmap agreed (`docs/01`–`03`).

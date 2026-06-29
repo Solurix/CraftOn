@@ -45,6 +45,8 @@ matchings 1──* messages     (chat; or keyed by a conversation)
 | has_insurance | boolean | default false | 一人親方労災 proof; required for `freelance` to be confirmable |
 | trades | text[] | default `{}` | trade tags |
 | tools | text[] | default `{}` | |
+| bio | text | null | self-intro / profile detail (display only) |
+| years_experience | integer | default 0 | years of experience (display only) |
 | trust_score | numeric | default 0 | derived display value in P1 |
 | created_at / updated_at | timestamptz | | |
 
@@ -56,6 +58,7 @@ matchings 1──* messages     (chat; or keyed by a conversation)
 | contact_person | varchar | not null | |
 | prefecture | varchar | not null | |
 | address | varchar | null | |
+| bio | text | null | company intro / profile detail (display only) |
 | rating | numeric | default 0 | derived display value |
 | created_at / updated_at | timestamptz | | |
 
@@ -147,6 +150,20 @@ matchings 1──* messages     (chat; or keyed by a conversation)
 > Chat may physically live in Firestore for real-time delivery in Phase 1; the masking
 > filter and `was_filtered` audit still apply server-side. Keep an abstraction so it can
 > move to Postgres+websockets later. See `02-architecture.md`.
+
+## notifications
+| column | type | constraints | notes |
+|---|---|---|---|
+| id | UUID | PK | |
+| user_id | UUID | FK→users.id | recipient |
+| type | varchar | not null | e.g. `application_received`, `application_confirmed`, … (rendered via i18n) |
+| params | jsonb | default `{}` | substitution params for the localized message |
+| link | varchar | null | in-app path the client navigates to (e.g. `/matchings/{id}`) |
+| is_read | boolean | default false | |
+| created_at | timestamptz | | |
+
+> Stored as type + params (not rendered text) so messages localize to the
+> recipient's language at read time. Index `(user_id, is_read)`.
 
 ## app_config / feature_flags
 Small key-value tables (or a typed settings table) backing `07-config-and-flags.md`.
