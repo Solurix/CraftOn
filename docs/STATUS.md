@@ -61,6 +61,11 @@ PWA (`crafton-web`, step 8) are built and green; happy-path E2E in place (step 9
   empty/error states. Vitest + lint + typecheck + build green.
 - ✅ **Hardening + E2E (step 9)**: API-level full-cycle test + Playwright browser smoke
   (signup→onboarding) verified against a running API.
+- ✅ **Public landing page** (`crafton-web` `/`): logged-out visitors now see a
+  marketing page (hero, who-it's-for, how-it-works, features, CTAs) explaining the
+  product before they register, instead of an immediate redirect to `/login`.
+  Keyed copy in ja/en (parity enforced); `/login?mode=signup` deep-links the sign-up
+  flow. Vitest + lint + typecheck + build green.
 
 ## In progress
 - (Phase 1 dev build complete — see "Next up" for deployment + go-live items.)
