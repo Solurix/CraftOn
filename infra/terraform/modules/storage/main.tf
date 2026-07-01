@@ -23,4 +23,25 @@ resource "google_storage_bucket" "uploads" {
       type = "Delete"
     }
   }
+
+  # Allow the browser to PUT (upload) and GET (display) objects directly via the
+  # signed URLs the API mints. Without this, cross-origin uploads are blocked.
+  dynamic "cors" {
+    for_each = length(var.cors_origins) > 0 ? [1] : []
+    content {
+      origin          = var.cors_origins
+      method          = ["GET", "PUT", "HEAD"]
+      response_header = ["Content-Type"]
+      max_age_seconds = 3600
+    }
+  }
+}
+
+# The identity that signs v4 URLs also needs object read/write on the bucket:
+# a signed URL grants the operation as this service account.
+resource "google_storage_bucket_iam_member" "writer" {
+  count  = var.writer_service_account == null ? 0 : 1
+  bucket = google_storage_bucket.uploads.name
+  role   = "roles/storage.objectAdmin"
+  member = "serviceAccount:${var.writer_service_account}"
 }

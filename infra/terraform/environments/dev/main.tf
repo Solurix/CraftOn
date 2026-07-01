@@ -37,7 +37,20 @@ module "storage" {
   bucket_name = var.uploads_bucket_name
   location    = var.region
 
+  # Browser uploads/display go straight to GCS via the API's signed URLs; allow
+  # the web origin(s). The API runtime SA both signs the URLs and owns the objects.
+  cors_origins           = concat([module.web.uri], var.extra_cors_origins)
+  writer_service_account = google_service_account.api.email
+
   depends_on = [module.services]
+}
+
+# The API runtime SA must be able to impersonate itself to mint v4 signed URLs
+# (Cloud Run has no SA key, so generate_signed_url() signs via the IAM SignBlob API).
+resource "google_service_account_iam_member" "api_token_creator" {
+  service_account_id = google_service_account.api.name
+  role               = "roles/iam.serviceAccountTokenCreator"
+  member             = "serviceAccount:${google_service_account.api.email}"
 }
 
 module "database" {
@@ -98,8 +111,9 @@ module "api" {
     CRAFTON_ENV                 = "dev"
     CRAFTON_AUTH_MODE           = "fake"
     CRAFTON_FIREBASE_PROJECT_ID = var.project_id
-    CRAFTON_STORAGE_MODE        = "fake"
-    CRAFTON_GCS_BUCKET          = module.storage.bucket_name
+    # Real Cloud Storage: uploads/photos use signed URLs against the bucket below.
+    CRAFTON_STORAGE_MODE = "gcs"
+    CRAFTON_GCS_BUCKET   = module.storage.bucket_name
     # NOTE: do not set CRAFTON_SUPPORTED_LANGUAGES here — pydantic-settings JSON-decodes
     # list fields from env at the source level (before the validator), so "ja,en" errors.
     # The app default is already ["ja","en"].

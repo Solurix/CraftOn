@@ -13,6 +13,14 @@ variable "region" {
 variable "uploads_bucket_name" {
   type        = string
   description = "Globally-unique name for the uploads bucket, e.g. crafton-uploads-dev-<suffix>."
+  # Default so a missing tfvars value never silently drops the bucket from the plan.
+  default = "crafton-uploads-dev-500709"
+}
+
+variable "extra_cors_origins" {
+  type        = list(string)
+  description = "Additional web origins allowed to upload/display bucket objects (e.g. http://localhost:3000 for local dev). The deployed web URL is included automatically."
+  default     = ["http://localhost:3000"]
 }
 
 variable "db_password" {
