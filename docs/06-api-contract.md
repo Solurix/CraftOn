@@ -15,11 +15,14 @@ Conventions: snake_case JSON; money integer JPY; timestamps ISO-8601 UTC; errors
 | POST | `/auth/session` | valid OTP token | Register on first login (verifies the OTP token; sets username/email/password) or return the existing user. Returns an API session token on creation. |
 | POST | `/auth/login` | public | Returning login: identifier (username/email/phone) + password → API session token. No OTP. |
 | POST | `/auth/password` | self (active) | Set/replace own password. |
+| POST | `/auth/reset-password` | valid OTP token | Forgot-password: re-verify phone by OTP, set a new password, return a session token. |
+| PATCH | `/me/account` | self (active) | Change own login identifiers (username / email). |
 | GET | `/me` | any | Current user + profile + status |
 
-> SMS OTP (handled by Firebase on the client) is required **only at registration** to
-> prove phone ownership. Returning logins use identifier + password and the API issues
-> its own signed session token (ADR 0009). Phone stays the canonical identity.
+> SMS OTP (handled by Firebase on the client) is required **only at registration and
+> password reset** to prove phone ownership. Returning logins use identifier + password
+> and the API issues its own signed session token (ADR 0009). Phone stays the canonical
+> identity.
 
 ## Onboarding & profiles
 | Method | Path | Role | Purpose |
@@ -37,6 +40,7 @@ Conventions: snake_case JSON; money integer JPY; timestamps ISO-8601 UTC; errors
 | POST | `/documents/upload-url` | worker/contractor | Get a signed Cloud Storage upload URL |
 | POST | `/documents` | worker/contractor | Register an uploaded doc (type, path) |
 | GET | `/documents/me` | owner | List own docs + review status |
+| GET | `/documents/{id}/view-url` | owner or admin | Short-lived signed read URL for a doc's bytes (photo display / vetting) |
 
 ## Jobs
 | Method | Path | Role | Purpose |

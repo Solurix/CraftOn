@@ -3,7 +3,7 @@
 > Update this file at the end of every work session. It is the first thing a new GenAI
 > session reads after `CLAUDE.md`.
 
-_Last updated: 2026-06-29_
+_Last updated: 2026-06-30_
 
 ## Dev environment — DEPLOYED to GCP ✅ (2026-06-29)
 The `dev` Terraform environment is live in `crafton-dev-500709` (Tokyo), with the
@@ -41,13 +41,16 @@ post job → apply → confirm → check-in → check-out → approve completion
 with admin vetting, the visa/insurance gates, server-side contact masking, and
 the ¥3,000 fee record. Backend (`crafton-api`, build-order steps 1–7) and the
 PWA (`crafton-web`, step 8) are built and green; happy-path E2E in place (step 9).
-**Pushed to `main`** in both app repos. Remaining: `terraform apply` to deploy
-(needs billing + state bucket), real Firebase wiring, and legal sign-off on terms.
-with admin vetting, the visa/insurance gates, server-side contact masking, and
-the ¥3,000 fee record. Backend (`crafton-api`, build-order steps 1–7) and the
-PWA (`crafton-web`, step 8) are built and green; happy-path E2E in place (step 9).
-**Pushed to `main`** in both app repos. Remaining: `terraform apply` to deploy
-(needs billing + state bucket), real Firebase wiring, and legal sign-off on terms.
+**Deployed to the GCP dev project** (`crafton-dev-500709`, `asia-northeast1`) on
+Cloud Run — see the "Dev environment — DEPLOYED" section above. Remaining before
+go-live: real Firebase wiring for production, an **email provider** for
+verification/reset emails, and **legal sign-off** on the terms wording.
+
+**This session's additions (on `main`):** forgot/reset password (via OTP) +
+account-identifier updates (`PATCH /me/account`); a document **view-url** signed-read
+endpoint + web **photo management** (upload + gallery); fuller contract-terms
+wording; and web **Terms of Service / Privacy** pages. All gates green in both app
+repos; deploys via the CI/CD pipeline on push to `main` (no `terraform apply` needed).
 
 ## Done
 - ✅ **Auth reworked (2026-06-29, ADR 0009):** returning login by identifier
